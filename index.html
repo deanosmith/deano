@@ -3,12 +3,13 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Dean M. Smith — Data Engineer based in Copenhagen." />
+  <meta name="description" content="Dean M. Smith - Data Engineer based in Copenhagen." />
   <meta name="theme-color" content="#050505" />
   <title>Dean M. Smith</title>
+  <link rel="icon" type="image/png" href="favicon.png" />
   <style>
     /* ── Reset ──────────────────────────────────────────── */
-    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; cursor: none; }
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
     html { scroll-behavior: smooth; }
 
     /* ── Tokens ──────────────────────────────────────────── */
@@ -33,30 +34,127 @@
                    'Helvetica Neue', sans-serif;
       -webkit-font-smoothing: antialiased;
       overflow-x: hidden;
+      cursor: none;
+    }
+    body.custom-cursor,
+    body.custom-cursor * {
+      cursor: none !important;
     }
     a { color: inherit; text-decoration: none; }
 
-    /* ── Cursor — spinning diamond ───────────────────────── */
-    #cursor {
+    /* ── Cursor — atomic orbit ───────────────────────────── */
+    #cursor-atom {
       position: fixed;
-      width: 22px; height: 22px;
-      border: 1.5px solid rgba(200, 151, 58, 0.78);
-      border-radius: 3px;
-      pointer-events: none; z-index: 9999;
-      animation: cur-spin 4s linear infinite;
-      transition: width 0.32s ease, height 0.32s ease,
-                  border-radius 0.32s ease, border-color 0.32s ease,
-                  background 0.32s ease;
+      top: 0; left: 0;
+      width: 32px; height: 32px;
+      --orbit-x: 14px;
+      --orbit-y: 6px;
+      --orbit-peak: 7px;
+      pointer-events: none;
+      transform: translate3d(-50%, -50%, 0);
+      will-change: transform;
+      z-index: 10000;
     }
-    @keyframes cur-spin {
-      from { transform: translate(-50%, -50%) rotate(0deg); }
-      to   { transform: translate(-50%, -50%) rotate(360deg); }
+    #cursor-atom.hover {
+      --orbit-x: 21px;
+      --orbit-y: 9px;
+      --orbit-peak: 10px;
     }
-    #cursor.hover {
-      width: 46px; height: 46px;
+    .cursor-nucleus,
+    .cursor-electron {
+      position: absolute;
+      left: 50%; top: 50%;
+      pointer-events: none;
+    }
+    .cursor-nucleus {
+      width: 5px; height: 5px;
+      transform: translate(-50%, -50%);
       border-radius: 50%;
-      border-color: rgba(200, 151, 58, 1);
-      background: rgba(200, 151, 58, 0.07);
+      background: var(--gold-bright);
+      box-shadow: 0 0 18px rgba(226,179,84,0.55);
+      transition: transform 0.22s ease, background 0.22s ease;
+      z-index: 2;
+    }
+    .cursor-electron {
+      width: 4px; height: 4px;
+      margin: -2px 0 0 -2px;
+      border-radius: 50%;
+      background: var(--text);
+      box-shadow: 0 0 12px rgba(240,237,230,0.5);
+      animation: atom-orbit 1.55s linear infinite;
+      will-change: transform, opacity;
+    }
+    .cursor-electron.secondary {
+      width: 3px; height: 3px;
+      margin: -1.5px 0 0 -1.5px;
+      background: var(--gold-bright);
+      box-shadow: 0 0 12px rgba(226,179,84,0.5);
+      animation-name: atom-orbit-secondary;
+      animation-duration: 1.85s;
+    }
+    #cursor-atom.hover .cursor-nucleus {
+      transform: translate(-50%, -50%) scale(1.28);
+      background: var(--text);
+    }
+    #cursor-atom.hover .cursor-electron {
+      animation-duration: 1.18s;
+    }
+    #cursor-atom.hover .cursor-electron.secondary {
+      animation-duration: 1.38s;
+    }
+    @keyframes atom-orbit {
+      0% {
+        transform: translate3d(var(--orbit-x), var(--orbit-y), 0) scale(1.12);
+        opacity: 1;
+        z-index: 3;
+      }
+      25% {
+        transform: translate3d(0, calc(-1 * var(--orbit-peak)), 0) scale(0.72);
+        opacity: 0.5;
+        z-index: 1;
+      }
+      50% {
+        transform: translate3d(calc(-1 * var(--orbit-x)), calc(-1 * var(--orbit-y)), 0) scale(0.64);
+        opacity: 0.32;
+        z-index: 1;
+      }
+      75% {
+        transform: translate3d(0, var(--orbit-peak), 0) scale(1.18);
+        opacity: 1;
+        z-index: 3;
+      }
+      100% {
+        transform: translate3d(var(--orbit-x), var(--orbit-y), 0) scale(1.12);
+        opacity: 1;
+        z-index: 3;
+      }
+    }
+    @keyframes atom-orbit-secondary {
+      0% {
+        transform: translate3d(calc(-0.78 * var(--orbit-x)), calc(1.28 * var(--orbit-y)), 0) scale(0.7);
+        opacity: 0.38;
+        z-index: 1;
+      }
+      25% {
+        transform: translate3d(calc(0.48 * var(--orbit-x)), calc(-1.08 * var(--orbit-peak)), 0) scale(1.08);
+        opacity: 0.95;
+        z-index: 3;
+      }
+      50% {
+        transform: translate3d(calc(0.82 * var(--orbit-x)), calc(-1.24 * var(--orbit-y)), 0) scale(1.16);
+        opacity: 1;
+        z-index: 3;
+      }
+      75% {
+        transform: translate3d(calc(-0.42 * var(--orbit-x)), calc(1.05 * var(--orbit-peak)), 0) scale(0.72);
+        opacity: 0.42;
+        z-index: 1;
+      }
+      100% {
+        transform: translate3d(calc(-0.78 * var(--orbit-x)), calc(1.28 * var(--orbit-y)), 0) scale(0.7);
+        opacity: 0.38;
+        z-index: 1;
+      }
     }
 
     /* ── Background ──────────────────────────────────────── */
@@ -179,26 +277,35 @@
       opacity: 0; animation: riseIn 0.85s ease forwards 0.6s;
     }
 
-    /* Skills in left panel */
-    .left-skills {
-      display: flex; flex-direction: column; gap: 20px;
+    /* Compact snapshot in left panel */
+    .hero-snapshot {
+      display: grid; gap: 10px;
       position: relative; z-index: 1;
       opacity: 0; animation: riseIn 0.85s ease forwards 0.78s;
     }
-    .skill-label {
-      font-size: 10px; letter-spacing: 0.09em; color: var(--gold);
-      margin-bottom: 9px; text-transform: uppercase;
+    .snapshot-item {
+      display: grid;
+      grid-template-columns: 86px 1fr;
+      align-items: baseline;
+      gap: 14px;
+      padding: 12px 0;
+      border-top: 1px solid rgba(200,151,58,0.08);
     }
-    .skill-pills { display: flex; flex-wrap: wrap; gap: 6px; }
-    .skill-pill {
-      font-size: 13px; padding: 6px 14px;
-      border: 1px solid var(--border); border-radius: var(--r-pill);
+    .snapshot-item:last-child {
+      border-bottom: 1px solid rgba(200,151,58,0.08);
+    }
+    .snapshot-label {
+      font-size: 10px;
+      letter-spacing: 0.09em;
+      color: var(--gold);
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+    .snapshot-copy {
+      font-size: 14px;
+      line-height: 1.5;
       color: var(--text);
-      transition: border-color 0.25s, color 0.25s, background 0.25s;
-    }
-    .skill-pill:hover {
-      border-color: rgba(200,151,58,0.4); color: var(--gold);
-      background: rgba(200,151,58,0.05);
+      opacity: 0.86;
     }
 
     /* Scroll hint */
@@ -252,7 +359,7 @@
     .timeline { position: relative; padding-left: 52px; }
     .timeline::before {
       content: ''; position: absolute;
-      left: 8px; top: 8px; bottom: 8px; width: 1px;
+      left: 8px; top: 30px; bottom: 8px; width: 1px;
       background: linear-gradient(to bottom, var(--gold) 0%, rgba(200,151,58,0.08) 100%);
       border-radius: var(--r-pill);
     }
@@ -295,8 +402,65 @@
     .tl-title   { font-size: 17px; font-weight: 600; letter-spacing: -0.01em; }
     .tl-date    { font-size: 14px; color: var(--text); letter-spacing: 0.02em; white-space: nowrap; }
     .tl-company { font-size: 14px; color: var(--gold); margin-bottom: 4px; }
-    .tl-loc     { font-size: 13px; color: var(--text); margin-bottom: 14px; }
+    .tl-loc     { font-size: 13px; color: var(--text); margin-bottom: 12px; }
+    .tl-desc    { font-size: 14px; color: var(--text); line-height: 1.72; margin-bottom: 14px; opacity: 0.82; }
     .tag-row    { display: flex; flex-wrap: wrap; gap: 6px; }
+    .tl-header  {
+      display: block; width: 100%;
+      cursor: pointer; user-select: none; position: relative; padding: 0 26px 0 0;
+      appearance: none; border: 0; background: transparent; color: inherit;
+      font: inherit; text-align: left;
+    }
+    .tl-header::after {
+      content: '+';
+      position: absolute; right: 0; top: 1px;
+      color: var(--gold); font-size: 20px; font-weight: 300; line-height: 1;
+      transition: transform 0.3s;
+    }
+    .tl-card.expanded .tl-header::after { content: '-'; }
+    .tl-body {
+      height: 0; overflow: hidden; opacity: 0;
+      transition: height 0.34s cubic-bezier(.22,.61,.36,1),
+                  opacity 0.22s ease,
+                  margin-top 0.24s ease;
+      margin-top: 0;
+      will-change: height, opacity;
+    }
+    .tl-card.expanded .tl-body {
+      opacity: 1; margin-top: 14px;
+    }
+    .tl-body-inner {
+      overflow: hidden;
+    }
+    .tl-copy {
+      font-size: 14px; color: var(--text); line-height: 1.72;
+      opacity: 0.84; margin-bottom: 16px;
+    }
+    .tl-copy p + p,
+    .tl-copy ul + p,
+    .tl-copy p + ul {
+      margin-top: 12px;
+    }
+    .tl-copy ul {
+      margin: 8px 0 14px 18px;
+      padding-left: 0;
+      list-style-type: disc;
+    }
+    .tl-copy ul ul {
+      margin: 6px 0 8px 18px;
+      list-style-type: circle;
+    }
+    .tl-copy li {
+      padding-left: 4px;
+      margin: 5px 0;
+    }
+    .tl-copy li::marker,
+    .tl-subhead {
+      color: var(--gold);
+    }
+    .tl-subhead {
+      font-weight: 500;
+    }
     .tag {
       font-size: 12px; padding: 4px 12px; letter-spacing: 0.02em;
       border: 1px solid var(--border); border-radius: var(--r-pill); color: var(--text);
@@ -316,6 +480,7 @@
     /* ── Projects ────────────────────────────────────────── */
     .projects-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
     .proj-card {
+      display: block;
       padding: 36px;
       transition: border-color 0.35s, box-shadow 0.35s, transform 0.35s;
     }
@@ -323,7 +488,7 @@
       content: '';
       position: absolute; inset: 0; border-radius: var(--r);
       background: radial-gradient(ellipse at 0% 0%, rgba(200,151,58,0.07) 0%, transparent 55%);
-      opacity: 0; transition: opacity 0.35s;
+      opacity: 0; transition: opacity 0.35s; pointer-events: none;
     }
     .proj-card:hover {
       border-color: rgba(200,151,58,0.3);
@@ -331,47 +496,75 @@
       transform: translateY(-5px);
     }
     .proj-card:hover::after { opacity: 1; }
-    .proj-num   { font-size: 11px; color: var(--gold); letter-spacing: 0.05em; margin-bottom: 18px; }
+    .proj-num   { font-size: 11px; color: var(--gold); letter-spacing: 0.05em; margin-bottom: 14px; }
+    .proj-content {
+      display: flex; gap: 28px; align-items: flex-start;
+    }
+    .proj-text  { flex: 1; display: flex; flex-direction: column; }
+    .proj-thumb {
+      width: min(42%, 220px); flex-shrink: 0;
+      aspect-ratio: 4 / 3; height: auto;
+      border-radius: calc(var(--r) - 4px);
+      object-fit: contain; padding: 8px;
+      background: rgba(255,255,255,0.025);
+      border: 1px solid var(--border);
+    }
     .proj-title { font-size: 22px; font-weight: 600; letter-spacing: -0.015em; margin-bottom: 10px; }
     .proj-desc  { font-size: 16px; color: var(--text); line-height: 1.72; margin-bottom: 22px; }
+    .proj-features {
+      list-style: none;
+      display: grid;
+      gap: 7px;
+      margin: -8px 0 20px;
+    }
+    .proj-features li {
+      position: relative;
+      padding-left: 16px;
+      font-size: 14px;
+      line-height: 1.45;
+      color: var(--text);
+      opacity: 0.82;
+    }
+    .proj-features li::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0.62em;
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--gold);
+      box-shadow: 0 0 10px rgba(200,151,58,0.38);
+    }
     .proj-link {
       display: inline-flex; align-items: center; gap: 8px;
       font-size: 12px; letter-spacing: 0.04em; color: var(--gold);
-      transition: gap 0.3s;
+      transition: gap 0.3s; margin-top: auto; padding-top: 16px;
     }
-    .proj-link:hover { gap: 14px; }
+    .proj-card:hover .proj-link { gap: 14px; }
 
     /* ── Contact ─────────────────────────────────────────── */
     #contact { text-align: center; }
-    .contact-email {
-      display: inline-block;
-      font-size: clamp(26px, 4.2vw, 52px);
-      font-weight: 500; letter-spacing: -0.02em; color: var(--text);
-      margin-bottom: 14px; position: relative;
-      transition: color 0.3s, text-shadow 0.3s;
+    .connect-icons {
+      display: flex; justify-content: center; gap: 24px; margin-top: 52px; flex-wrap: wrap;
     }
-    .contact-email::after {
-      content: ''; position: absolute;
-      bottom: -4px; left: 0; right: 0; height: 1px;
-      background: var(--gold); border-radius: var(--r-pill);
-      transform: scaleX(0);
-      transition: transform 0.42s cubic-bezier(.25,.46,.45,.94);
-    }
-    .contact-email:hover { color: var(--gold); text-shadow: 0 0 50px rgba(200,151,58,0.3); }
-    .contact-email:hover::after { transform: scaleX(1); }
-    .socials {
-      display: flex; justify-content: center; flex-wrap: wrap; gap: 8px; margin-top: 48px;
-    }
-    .social-btn {
-      font-size: 13px; padding: 11px 22px;
-      border: 1px solid var(--border); border-radius: var(--r-pill); color: var(--text);
+    .connect-btn {
+      display: flex; flex-direction: column; align-items: center; gap: 16px;
+      padding: 40px 52px;
+      border: 1px solid var(--border); border-radius: var(--r);
       backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
-      transition: color 0.25s, border-color 0.25s, background 0.25s, box-shadow 0.25s;
+      background: var(--surface); color: var(--text); min-width: 160px;
+      transition: color 0.25s, border-color 0.25s, background 0.25s, box-shadow 0.25s, transform 0.28s;
     }
-    .social-btn:hover {
+    .connect-btn:hover {
       color: var(--gold-bright); border-color: rgba(200,151,58,0.4);
-      background: rgba(200,151,58,0.06); box-shadow: 0 0 20px rgba(200,151,58,0.1);
+      background: rgba(200,151,58,0.06);
+      box-shadow: 0 0 48px rgba(200,151,58,0.12), 0 12px 40px rgba(0,0,0,0.3);
+      transform: translateY(-6px);
     }
+    .connect-btn svg { transition: transform 0.28s; }
+    .connect-btn:hover svg { transform: scale(1.08); }
+    .connect-btn span { font-size: 15px; letter-spacing: 0.04em; font-weight: 500; }
 
     /* ── Footer ──────────────────────────────────────────── */
     footer {
@@ -398,331 +591,874 @@
     /* ── Responsive ──────────────────────────────────────── */
     @media (max-width: 920px) {
       .split-layout     { grid-template-columns: 1fr; }
-      .split-left       { position: relative; height: auto; padding: 72px 36px 52px;
+      .split-left       { position: relative; height: auto; padding: 72px 28px 52px;
                           border-right: none; border-bottom: 1px solid var(--border); }
-      .split-right      { padding: 52px 36px; }
+      .split-right      { padding: 64px 28px 52px; }
+      .right-section    { margin-bottom: 80px; }
       .section          { padding: 80px 28px; }
-      .projects-grid    { grid-template-columns: 1fr; }
+      .projects-grid    { grid-template-columns: 1fr; gap: 20px; }
+      .proj-content     { flex-direction: column; }
+      .proj-thumb       { width: 100%; }
+      .connect-btn      { padding: 32px 36px; }
+      .tl-item          { margin-bottom: 28px; }
+      .tl-card          { padding: 22px 20px; }
+      .about-bio        { font-size: 16px; }
+      .about-card       { padding: 18px 20px; }
+      .hero-snapshot    { gap: 0; }
+      .snapshot-item    { grid-template-columns: 80px 1fr; gap: 12px; padding: 11px 0; }
+      .snapshot-copy    { font-size: 13px; }
       footer            { padding: 24px 28px; flex-direction: column; gap: 10px; text-align: center; }
       .footer-nav       { justify-content: center; }
     }
+    @media (min-width: 921px) and (max-height: 820px) {
+      .scroll-hint { display: none; }
+    }
     @media (max-width: 480px) {
-      #cursor { display: none; }
-      *       { cursor: auto; }
+      #cursor-atom { display: none; }
+      body,
+      body.custom-cursor,
+      body.custom-cursor * { cursor: auto !important; }
+      .split-left       { padding: 52px 20px 44px; }
+      .split-right      { padding: 48px 20px 44px; }
+      .section          { padding: 60px 20px; }
+      .hero-tagline     { font-size: 15px; line-height: 1.9; }
+      .about-bio        { font-size: 15px; line-height: 2; }
+      .section-title    { margin-bottom: 24px; }
+      .tl-card          { padding: 20px 18px; }
+      .tl-title         { font-size: 15px; }
+      .tl-date          { font-size: 12px; }
+      .tl-desc          { font-size: 13px; }
+      .proj-card        { padding: 24px 20px; }
+      .proj-title       { font-size: 19px; }
+      .proj-desc        { font-size: 14px; }
+    }
+    @media (pointer: coarse) {
+      #cursor-atom { display: none; }
+      body,
+      body.custom-cursor,
+      body.custom-cursor * { cursor: auto !important; }
     }
   </style>
 </head>
 <body>
 
-  <div id="cursor"></div>
+  <div id="cursor-atom" aria-hidden="true">
+    <span class="cursor-electron"></span>
+    <span class="cursor-electron secondary"></span>
+    <span class="cursor-nucleus"></span>
+  </div>
 
   <canvas id="bg-canvas"></canvas>
   <div class="orb orb-a"></div>
   <div class="orb orb-b"></div>
   <div class="orb orb-c"></div>
 
-  <main>
-
+  <main id="app" hidden>
     <div class="split-layout">
-
-      <!-- ── Left: Identity + Skills ───────────────────────── -->
       <div class="split-left">
         <div class="hero-grid"></div>
         <div class="hero-halo"></div>
-
-        <div class="left-identity">
-          <p class="hero-loc">Data Engineer · Copenhagen, Denmark</p>
-          <h1 class="hero-name">
-            Dean<br><span class="accent">M. Smith</span>
-          </h1>
-          <p class="hero-tagline">
-            Building data systems that move,<br>transform, and make sense of the world.
-          </p>
-        </div>
-
-        <div class="left-skills">
-          <div>
-            <p class="skill-label">Experience</p>
-            <div class="skill-pills">
-              <span class="skill-pill">ETL/ELT Pipelines</span>
-              <span class="skill-pill">Data Orchestration</span>
-              <span class="skill-pill">Database Architecture</span>
-              <span class="skill-pill">CI/CD</span>
-            </div>
-          </div>
-          <div>
-            <p class="skill-label">Tools &amp; Platforms</p>
-            <div class="skill-pills">
-              <span class="skill-pill">Airflow</span>
-              <span class="skill-pill">Kafka</span>
-              <span class="skill-pill">Snowflake</span>
-              <span class="skill-pill">AWS S3</span>
-              <span class="skill-pill">SQS</span>
-              <span class="skill-pill">ECR</span>
-            </div>
-          </div>
-          <div>
-            <p class="skill-label">Languages</p>
-            <div class="skill-pills">
-              <span class="skill-pill">Python</span>
-              <span class="skill-pill">SQL</span>
-              <span class="skill-pill">C#</span>
-              <span class="skill-pill">Java</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="scroll-hint">
-          <div class="scroll-bar"></div>
-          <span>Scroll to explore</span>
-        </div>
+        <div class="left-identity" id="hero-identity"></div>
+        <div class="hero-snapshot" id="hero-snapshot"></div>
+        <div class="scroll-hint" id="scroll-hint"></div>
       </div>
 
-      <!-- ── Right: About + Experience ──────────────────────── -->
       <div class="split-right">
-
-        <!-- About Me -->
-        <div class="right-section" id="about">
-          <p class="eyebrow reveal">Background</p>
-          <h2 class="section-title reveal">About Me</h2>
-          <p class="about-bio reveal">
-            Data engineer with a deep love for <strong>computer science, space,
-            music,</strong> and <strong>birdwatching.</strong><br><br>
-            I build pipelines that move and make sense of data — from ingestion to
-            insight. Dual Irish (EU) &amp; South African citizen, based in Copenhagen.
-          </p>
-          <div class="about-card glass reveal">
-            <p>Enneagram Type 5 — The Investigator</p>
-            <p>Gallup strengths: Analytical · Responsibility · Deliberative · Competition · Focus</p>
-          </div>
-        </div>
-
-        <!-- Experience Timeline -->
-        <div class="right-section" id="experience">
-          <p class="eyebrow reveal">Career</p>
-          <h2 class="section-title reveal">Experience</h2>
-
-          <div class="timeline">
-
-            <!-- Current role — pulsing dot -->
-            <div class="tl-item reveal">
-              <div class="tl-dot active"></div>
-              <div class="tl-card glass">
-                <div class="tl-row">
-                  <h3 class="tl-title">Data Engineer</h3>
-                  <span class="tl-date">May 2025 – Present</span>
-                </div>
-                <p class="tl-company">DFDS · Full-time</p>
-                <p class="tl-loc">Copenhagen, Denmark</p>
-                <div class="tag-row">
-                  <span class="tag">Airflow</span>
-                  <span class="tag">Snowflake</span>
-                </div>
-              </div>
-            </div>
-
-            <div class="tl-item reveal">
-              <div class="tl-dot"></div>
-              <div class="tl-card glass">
-                <div class="tl-row">
-                  <h3 class="tl-title">Data Engineer</h3>
-                  <span class="tl-date">Feb 2024 – Apr 2025</span>
-                </div>
-                <p class="tl-company">Matter · Full-time · Hybrid</p>
-                <p class="tl-loc">Copenhagen, Denmark</p>
-                <div class="tag-row">
-                  <span class="tag">Amazon S3</span>
-                  <span class="tag">PostgreSQL</span>
-                </div>
-              </div>
-            </div>
-
-            <div class="tl-item reveal">
-              <div class="tl-dot"></div>
-              <div class="tl-card glass">
-                <div class="tl-row">
-                  <h3 class="tl-title">Data Engineer</h3>
-                  <span class="tl-date">Dec 2021 – Jan 2024</span>
-                </div>
-                <p class="tl-company">Penneo A/S · Full-time · Hybrid</p>
-                <p class="tl-loc">Copenhagen, Denmark</p>
-                <div class="tag-row">
-                  <span class="tag">Python</span>
-                  <span class="tag">SQL</span>
-                </div>
-              </div>
-            </div>
-
-            <div class="tl-item reveal">
-              <div class="tl-dot"></div>
-              <div class="tl-card glass">
-                <div class="tl-row">
-                  <h3 class="tl-title">Junior Data Engineer</h3>
-                  <span class="tl-date">Mar 2020 – Nov 2021</span>
-                </div>
-                <p class="tl-company">Barrows · Full-time · On-site</p>
-                <p class="tl-loc">Durban, KwaZulu-Natal, South Africa</p>
-                <div class="tag-row">
-                  <span class="tag">Python</span>
-                  <span class="tag">SQL</span>
-                </div>
-              </div>
-            </div>
-
-          </div>
-        </div>
-
+        <div class="right-section" id="about"></div>
+        <div class="right-section" id="experience"></div>
       </div>
     </div>
 
-    <!-- ── Projects (full width) ──────────────────────────── -->
-    <section class="section" id="projects">
-      <p class="eyebrow reveal">Side Projects</p>
-      <h2 class="section-title reveal">Projects</h2>
-
-      <div class="projects-grid">
-
-        <article class="proj-card glass reveal">
-          <p class="proj-num">01</p>
-          <h3 class="proj-title">Stride</h3>
-          <p class="proj-desc">ACWR workload app to manage and monitor fitness levels — keeping athletes in their optimal training zone.</p>
-          <div class="tag-row" style="margin-bottom: 24px;">
-            <span class="tag">Fitness</span>
-            <span class="tag">Analytics</span>
-          </div>
-          <a href="https://stride-dynamics.vercel.app/" class="proj-link" target="_blank" rel="noopener">View Project →</a>
-        </article>
-
-        <article class="proj-card glass reveal">
-          <p class="proj-num">02</p>
-          <h3 class="proj-title">Lexi Score</h3>
-          <p class="proj-desc">Lexical scoring tool that quantifies and ranks the reading complexity of books and literary texts.</p>
-          <div class="tag-row" style="margin-bottom: 24px;">
-            <span class="tag">NLP</span>
-            <span class="tag">Books</span>
-          </div>
-          <a href="https://lexi-score.vercel.app/" class="proj-link" target="_blank" rel="noopener">View Project →</a>
-        </article>
-
-      </div>
-    </section>
-
-    <!-- ── Contact (full width) ───────────────────────────── -->
-    <section class="section" id="contact">
-      <p class="eyebrow reveal">Get In Touch</p>
-      <h2 class="section-title reveal">Let's Talk</h2>
-      <a href="mailto:deanmsmith10@gmail.com" class="contact-email reveal">deanmsmith10@gmail.com</a>
-      <div class="socials reveal">
-        <a href="https://www.linkedin.com/in/dean-m-smith-a1ba171a1/" class="social-btn" target="_blank" rel="noopener">LinkedIn</a>
-        <a href="https://github.com/deanosmith" class="social-btn" target="_blank" rel="noopener">GitHub</a>
-      </div>
-    </section>
-
+    <section class="section" id="projects"></section>
+    <section class="section" id="contact"></section>
   </main>
 
-  <footer>
-    <p>© <span id="yr"></span> Dean M. Smith</p>
-    <nav class="footer-nav">
-      <a href="#experience">Experience</a>
-      <a href="#projects">Projects</a>
-      <a href="#about">About</a>
-      <a href="#contact">Contact</a>
-    </nav>
-  </footer>
+  <footer id="site-footer"></footer>
 
   <script>
-    document.getElementById('yr').textContent = new Date().getFullYear();
-
-    /* ── Cursor — spinning diamond ────────────────────────── */
-    const cursor = document.getElementById('cursor');
-    let mx = 0, my = 0, rx = 0, ry = 0;
-
-    document.addEventListener('mousemove', e => {
-      mx = e.clientX; my = e.clientY;
-    });
-
-    (function lerp() {
-      rx += (mx - rx) * 0.12;
-      ry += (my - ry) * 0.12;
-      cursor.style.left = (Math.round(rx * 10) / 10) + 'px';
-      cursor.style.top  = (Math.round(ry * 10) / 10) + 'px';
-      requestAnimationFrame(lerp);
-    })();
-
-    document.querySelectorAll('a, button, .proj-card, .tl-card, .skill-pill').forEach(el => {
-      el.addEventListener('mouseenter', () => cursor.classList.add('hover'));
-      el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
-    });
-
-    /* ── Particle network ─────────────────────────────────── */
-    const canvas  = document.getElementById('bg-canvas');
-    const ctx     = canvas.getContext('2d');
-    const mobile  = window.innerWidth < 600;
-    const COUNT   = mobile ? 42 : 68;
-    const LINK_D  = mobile ? 100 : 130;
-
-    function resize() {
-      canvas.width  = window.innerWidth;
-      canvas.height = window.innerHeight;
-    }
-    resize();
-    window.addEventListener('resize', resize, { passive: true });
-
-    const pts = Array.from({ length: COUNT }, () => ({
-      x:  Math.random() * canvas.width,
-      y:  Math.random() * canvas.height,
-      vx: (Math.random() - 0.5) * 0.21,
-      vy: (Math.random() - 0.5) * 0.21,
-      r:  Math.random() * 1.1 + 0.38,
-      a:  Math.random() * 0.28 + 0.08,
-    }));
-
-    (function frame() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-      for (const p of pts) {
-        p.x += p.vx; p.y += p.vy;
-        if (p.x < 0) p.x = canvas.width;
-        if (p.x > canvas.width)  p.x = 0;
-        if (p.y < 0) p.y = canvas.height;
-        if (p.y > canvas.height) p.y = 0;
-
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-        ctx.fillStyle = 'rgba(200,151,58,' + p.a + ')';
-        ctx.fill();
+    const app = document.getElementById('app');
+    const svgNs = 'http://www.w3.org/2000/svg';
+    const siteContent = {
+      "site": {
+        "title": "Dean M. Smith",
+        "description": "Dean M. Smith - Data Engineer based in Copenhagen."
+      },
+      "hero": {
+        "location": "Data Engineer - Copenhagen, Denmark",
+        "name": [
+          {
+            "text": "Dean"
+          },
+          {
+            "text": "M. Smith",
+            "accent": true
+          }
+        ],
+        "tagline": [
+          "Building and maintaining robust data pipelines and infrastructure to empower downstream data-driven decision making."
+        ],
+        "snapshot": [
+          {
+            "label": "Core stack",
+            "text": "Python, SQL, Docker, AWS, Kafka"
+          },
+          {
+            "label": "Focus",
+            "text": "Pipeline automation, data architecture, and cloud infrastructure"
+          },
+          {
+            "label": "Experience",
+            "text": "6 years across SaaS: fintech, DaaS, and analytics"
+          }
+        ],
+      },
+      "about": {
+        "eyebrow": "Background",
+        "title": "About Me",
+        "paragraphs": [
+          "Data engineer with a deep love for computer science, space, music, and birdwatching.",
+          "Based in Copenhagen but originally from South Africa, I have been a data engineer for 6 years across 3 companies, working within agile teams. My responsibilities have spanned the full spectrum of backend data - from ingestion through to automation and maintenance.",
+          "Python and SQL are my bread and butter, though I also work with C#, Java, and Linux/Bash. Over time I've taken on more complex tooling: S3, Docker, and standard CI/CD Git practices."
+        ],
+        "highlightTerms": [
+          "computer science, space, music,",
+          "birdwatching.",
+          "6 years across 3 companies",
+          "Python",
+          "SQL"
+        ],
+        "facts": [
+          "Enneagram Type 5 - The Investigator & Observer - Dual Irish (EU) & South African citizen",
+          "Gallup strengths: Analytical - Responsibility - Deliberative - Competition - Focus"
+        ]
+      },
+      "experience": {
+        "eyebrow": "Career",
+        "title": "Experience",
+        "items": [
+          {
+            "title": "Data Engineer",
+            "company": "Matter A/S",
+            "location": "Copenhagen, Denmark",
+            "date": "February 2024 - Present",
+            "current": true,
+            "details": [
+              {
+                "type": "paragraph",
+                "text": "At Matter I was a part of the Data Foundation Squad, where I was responsible for the collection, storage, movement, tracking and metadata of various types of listed companies' documents. This comprised:"
+              },
+              {
+                "type": "list",
+                "items": [
+                  {
+                    "text": "Python ETL pipelines",
+                    "children": [
+                      "Both Task and Asset architectures"
+                    ]
+                  },
+                  {
+                    "text": "Postgres database management"
+                  },
+                  {
+                    "text": "AWS infrastructure use:",
+                    "children": [
+                      "S3 buckets for storage",
+                      "Athena for EDAs/simple queries",
+                      "Rudimentary SQS use for pipeline triggering"
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "paragraph",
+                "text": "As the admin of this data, I was responsible for the maintenance of both the dev and prod database, which was live and accessible to our customers on our platform. This also involved reporting to various stakeholders within the company to ensure the data was both accurate and ingestible by our downstream teams."
+              },
+              {
+                "type": "subhead",
+                "text": "Notable projects:"
+              },
+              {
+                "type": "paragraph",
+                "text": "The initial project of my role was the processing of ~300GB of data. This involved the creation and implementation of a scalable pipeline that could stream the data from one cloud service to another, while also performing minor transformations."
+              },
+              {
+                "type": "paragraph",
+                "text": "This pipeline consisted of asynchronous Python code that streamed data from Microsoft's SharePoint, merged it with a tracking file, and diverged the file's metadata to a Postgres DB and the reports to various S3 buckets. The reports were then processed and combined downstream with Matter's internal database to derive metrics."
+              }
+            ],
+            "tags": [
+              "Python",
+              "PostgreSQL",
+              "AWS S3",
+              "Athena",
+              "SQS"
+            ]
+          },
+          {
+            "title": "Data Engineer",
+            "company": "Penneo A/S",
+            "location": "Copenhagen, Denmark",
+            "date": "December 2021 - January 2024",
+            "details": [
+              {
+                "type": "paragraph",
+                "text": "Working within the Data & Analytics team using the Kanban framework, my daily responsibilities included:"
+              },
+              {
+                "type": "list",
+                "items": [
+                  {
+                    "text": "The management of Penneo's analytics pipelines:",
+                    "children": [
+                      "Python and SQL based ETL pipelines.",
+                      "Sources and destinations included MySQL, Redshift, AWS S3, APIs."
+                    ]
+                  },
+                  {
+                    "text": "Supporting our analysts:",
+                    "children": [
+                      "This can include simple ad hoc requests, pipelines creations or alterations and statistical aggregations."
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "subhead",
+                "text": "Notable projects:"
+              },
+              {
+                "type": "paragraph",
+                "text": "I lead a database restructuring project that's purpose was the transformation of a Knowledge Graph database into a Relational database. This has resulted in hours of Data Analysts' time saved each month due to the pre-parsing of nested dictionary columns before the data was ingested by our BI tool, Tableau."
+              },
+              {
+                "type": "paragraph",
+                "text": "I was also responsible for generating a 'document everything' culture within the various data-related departments. As a result, the onboarding and understanding of the company's data, from new to old employees, has greatly increased as the bottleneck of key-man conversations was reduced."
+              }
+            ],
+            "tags": [
+              "Python",
+              "SQL",
+              "MySQL",
+              "Redshift",
+              "AWS S3",
+              "Tableau"
+            ]
+          },
+          {
+            "title": "Junior Data Engineer",
+            "company": "Barrows Global",
+            "location": "Durban, South Africa",
+            "date": "March 2020 - November 2021",
+            "details": [
+              {
+                "type": "paragraph",
+                "text": "Working in a small Data & Analytics team that practiced the SCRUM framework, I was the primary Data Engineer responsible for establishing a data warehouse to centralise the data."
+              },
+              {
+                "type": "paragraph",
+                "text": "This data ranged from sensor information retrieved from APIs to Sales information imported from Sheets. The data was stored in a MySQL database which was connected to Tableau for various visualisations."
+              },
+              {
+                "type": "paragraph",
+                "text": "As the first Data Engineer my responsibilities included the above data management, Linux commands, Image Recognition software installations and device management."
+              }
+            ],
+            "tags": [
+              "Python",
+              "SQL",
+              "MySQL",
+              "Tableau",
+              "Linux"
+            ]
+          },
+          {
+            "title": "BSc Computer Science",
+            "company": "Varsity College",
+            "location": "Durban, South Africa",
+            "date": "2017 - 2019",
+            "details": [
+              {
+                "type": "paragraph",
+                "text": "This degree gave me a strong foundational understanding of IT and IoT. With modules like Advanced Databases, Network Engineering, Cloud Development, Cyber-security, and Object-Oriented Programming. It gave me the tools to create and manipulate software, hardware and data using all kinds of tools."
+              }
+            ],
+            "tags": [
+              "Advanced Databases",
+              "Network Engineering",
+              "Cloud Development",
+              "Cyber-security",
+              "Object-Oriented Programming"
+            ]
+          }
+        ]
+      },
+      "projects": {
+        "title": "Projects",
+        "items": [
+          {
+            "number": "01",
+            "title": "Stride",
+            "description": "ACWR workload app to manage and monitor fitness levels - keeping athletes in their optimal training zone.",
+            "url": "https://stride-dynamics.vercel.app/",
+            "ariaLabel": "Open Stride project",
+            "image": "stride.png",
+            "imageAlt": "Stride project preview",
+            "tags": [
+              "Fitness",
+              "Analytics"
+            ],
+            "linkLabel": "View Project"
+          },
+          {
+            "number": "02",
+            "title": "Lexi Score",
+            "description": "Lexical scoring tool that quantifies and ranks the reading complexity of books and literary texts.",
+            "url": "https://lexi-score.vercel.app/",
+            "ariaLabel": "Open Lexi Score project",
+            "image": "lexiscore.png",
+            "imageAlt": "Lexi Score project preview",
+            "tags": [
+              "NLP",
+              "Books",
+              "Analytics"
+            ],
+            "linkLabel": "View Project"
+          },
+          {
+            "number": "03",
+            "title": "Notas",
+            "description": "A lightweight notes workspace built for fast capture, sharing, and personalization.",
+            "url": "https://deanosmith.github.io/Notas/",
+            "ariaLabel": "Open Notas project",
+            "image": "notas.png",
+            "imageAlt": "Notas project preview",
+            "features": [
+              "Real-time saving and sharing",
+              "Google auth and sharing",
+              "Lightweight & customisable UI"
+            ],
+            "tags": [
+              "Notes",
+              "Real-time sharing",
+              "Lightweight & customisable"
+            ],
+            "linkLabel": "View Project"
+          }
+        ]
+      },
+      "contact": {
+        "eyebrow": "Get In Touch",
+        "title": "Let's Connect",
+        "methods": [
+          {
+            "label": "GitHub",
+            "href": "https://github.com/deanosmith",
+            "ariaLabel": "GitHub",
+            "icon": "github",
+            "external": true
+          },
+          {
+            "label": "LinkedIn",
+            "href": "https://www.linkedin.com/in/dean-m-smith-a1ba171a1/",
+            "ariaLabel": "LinkedIn",
+            "icon": "linkedin",
+            "external": true
+          },
+          {
+            "label": "Email",
+            "href": "mailto:deanmsmith10@gmail.com",
+            "ariaLabel": "Email",
+            "icon": "email"
+          }
+        ]
+      },
+      "footer": {
+        "copyrightTemplate": "\u00a9 {year} Dean M. Smith",
+        "nav": [
+          {
+            "label": "Experience",
+            "href": "#experience"
+          },
+          {
+            "label": "Projects",
+            "href": "#projects"
+          },
+          {
+            "label": "About",
+            "href": "#about"
+          },
+          {
+            "label": "Contact",
+            "href": "#contact"
+          }
+        ]
       }
+    };
 
-      ctx.lineWidth = 0.5;
-      for (let i = 0; i < pts.length; i++) {
-        for (let j = i + 1; j < pts.length; j++) {
-          const dx = pts[i].x - pts[j].x;
-          const dy = pts[i].y - pts[j].y;
-          const d  = Math.sqrt(dx * dx + dy * dy);
-          if (d < LINK_D) {
-            ctx.beginPath();
-            ctx.strokeStyle = 'rgba(200,151,58,' + (0.07 * (1 - d / LINK_D)) + ')';
-            ctx.moveTo(pts[i].x, pts[i].y);
-            ctx.lineTo(pts[j].x, pts[j].y);
-            ctx.stroke();
+    function createEl(tag, className, text) {
+      const el = document.createElement(tag);
+      if (className) el.className = className;
+      if (text !== undefined) el.textContent = text;
+      return el;
+    }
+
+    function appendLines(parent, lines) {
+      lines.forEach((line, index) => {
+        if (index > 0) parent.append(document.createElement('br'));
+        parent.append(document.createTextNode(line));
+      });
+    }
+
+    function appendHighlightedText(parent, text, highlights = []) {
+      const terms = highlights.slice().sort((a, b) => b.length - a.length);
+      let index = 0;
+
+      while (index < text.length) {
+        let nextTerm = null;
+        let nextIndex = text.length;
+
+        for (const term of terms) {
+          const found = text.indexOf(term, index);
+          if (found !== -1 && found < nextIndex) {
+            nextTerm = term;
+            nextIndex = found;
           }
         }
+
+        if (!nextTerm) {
+          parent.append(document.createTextNode(text.slice(index)));
+          break;
+        }
+
+        if (nextIndex > index) {
+          parent.append(document.createTextNode(text.slice(index, nextIndex)));
+        }
+
+        const strong = createEl('strong', '', nextTerm);
+        parent.append(strong);
+        index = nextIndex + nextTerm.length;
       }
-      requestAnimationFrame(frame);
-    })();
+    }
 
-    /* ── Scroll reveal ────────────────────────────────────── */
-    const io = new IntersectionObserver(entries => {
-      entries.forEach(entry => {
-        if (!entry.isIntersecting) return;
-        const peers = [...entry.target.parentElement.querySelectorAll('.reveal:not(.in)')];
-        const idx   = peers.indexOf(entry.target);
-        setTimeout(() => entry.target.classList.add('in'), Math.max(0, idx) * 88);
-        io.unobserve(entry.target);
+    function createTagRow(tags) {
+      const row = createEl('div', 'tag-row');
+      tags.forEach(tag => row.append(createEl('span', 'tag', tag)));
+      return row;
+    }
+
+    function createSvgIcon(name) {
+      const svg = document.createElementNS(svgNs, 'svg');
+      svg.setAttribute('viewBox', '0 0 24 24');
+      svg.setAttribute('width', '64');
+      svg.setAttribute('height', '64');
+      svg.setAttribute('aria-hidden', 'true');
+
+      if (name === 'email') {
+        svg.setAttribute('fill', 'none');
+        svg.setAttribute('stroke', 'currentColor');
+        svg.setAttribute('stroke-width', '1.5');
+        svg.setAttribute('stroke-linecap', 'round');
+        svg.setAttribute('stroke-linejoin', 'round');
+
+        const rect = document.createElementNS(svgNs, 'rect');
+        rect.setAttribute('x', '2');
+        rect.setAttribute('y', '4');
+        rect.setAttribute('width', '20');
+        rect.setAttribute('height', '16');
+        rect.setAttribute('rx', '2');
+
+        const path = document.createElementNS(svgNs, 'path');
+        path.setAttribute('d', 'M2 6l10 7 10-7');
+
+        svg.append(rect, path);
+        return svg;
+      }
+
+      svg.setAttribute('fill', 'currentColor');
+      const path = document.createElementNS(svgNs, 'path');
+      const paths = {
+        github: 'M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12',
+        linkedin: 'M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z'
+      };
+
+      path.setAttribute('d', paths[name] || paths.github);
+      svg.append(path);
+      return svg;
+    }
+
+    function renderHero(hero) {
+      const identity = document.getElementById('hero-identity');
+      const snapshot = document.getElementById('hero-snapshot');
+
+
+      identity.replaceChildren();
+      snapshot.replaceChildren();
+
+
+      identity.append(createEl('p', 'hero-loc', hero.location));
+
+      const name = createEl('h1', 'hero-name');
+      hero.name.forEach((part, index) => {
+        if (index > 0) name.append(document.createElement('br'));
+        const node = part.accent ? createEl('span', 'accent', part.text) : document.createTextNode(part.text);
+        name.append(node);
       });
-    }, { threshold: 0.06, rootMargin: '0px 0px -16px 0px' });
+      identity.append(name);
 
-    document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+      const tagline = createEl('p', 'hero-tagline');
+      appendLines(tagline, hero.tagline);
+      identity.append(tagline);
+
+      hero.snapshot.forEach(item => {
+        const row = createEl('div', 'snapshot-item');
+        row.append(createEl('span', 'snapshot-label', item.label));
+        row.append(createEl('span', 'snapshot-copy', item.text));
+        snapshot.append(row);
+      });
+
+    }
+
+    function renderAbout(about) {
+      const section = document.getElementById('about');
+      section.replaceChildren();
+      section.append(createEl('p', 'eyebrow reveal', about.eyebrow));
+      section.append(createEl('h2', 'section-title reveal', about.title));
+
+      const bio = createEl('p', 'about-bio reveal');
+      about.paragraphs.forEach((paragraph, index) => {
+        if (index > 0) bio.append(document.createElement('br'), document.createElement('br'));
+        appendHighlightedText(bio, paragraph, about.highlightTerms);
+      });
+      section.append(bio);
+
+      const card = createEl('div', 'about-card glass reveal');
+      about.facts.forEach(fact => card.append(createEl('p', '', fact)));
+      section.append(card);
+    }
+
+    function createList(items) {
+      const list = createEl('ul');
+      items.forEach(item => {
+        const li = createEl('li', '', item.text);
+        if (item.children && item.children.length) {
+          li.append(createList(item.children.map(child => ({ text: child }))));
+        }
+        list.append(li);
+      });
+      return list;
+    }
+
+    function renderDetailBlock(block) {
+      if (block.type === 'list') return createList(block.items);
+      if (block.type === 'subhead') return createEl('p', 'tl-subhead', block.text);
+      return createEl('p', '', block.text);
+    }
+
+    function renderExperience(experience) {
+      const section = document.getElementById('experience');
+      section.replaceChildren();
+      section.append(createEl('p', 'eyebrow reveal', experience.eyebrow));
+      section.append(createEl('h2', 'section-title reveal', experience.title));
+
+      const timeline = createEl('div', 'timeline');
+
+      experience.items.forEach((item, index) => {
+        const timelineItem = createEl('div', 'tl-item reveal');
+        timelineItem.append(createEl('div', item.current ? 'tl-dot active' : 'tl-dot'));
+
+        const card = createEl('div', 'tl-card glass');
+        const header = createEl('button', 'tl-header');
+        header.type = 'button';
+        header.setAttribute('aria-expanded', 'false');
+        header.setAttribute('aria-controls', `experience-${index}`);
+
+        const row = createEl('div', 'tl-row');
+        row.append(createEl('h3', 'tl-title', item.title));
+        row.append(createEl('span', 'tl-date', item.date));
+        header.append(row);
+        header.append(createEl('p', 'tl-company', item.company));
+        header.append(createEl('p', 'tl-loc', item.location));
+
+        const body = createEl('div', 'tl-body');
+        body.id = `experience-${index}`;
+        body.hidden = true;
+
+        const inner = createEl('div', 'tl-body-inner');
+        const copy = createEl('div', 'tl-copy');
+        item.details.forEach(block => copy.append(renderDetailBlock(block)));
+        inner.append(copy);
+        inner.append(createTagRow(item.tags));
+        body.append(inner);
+
+        card.append(header, body);
+        timelineItem.append(card);
+        timeline.append(timelineItem);
+      });
+
+      section.append(timeline);
+    }
+
+    function renderProjects(projects) {
+      const section = document.getElementById('projects');
+      section.replaceChildren();
+      section.append(createEl('p', 'eyebrow reveal', projects.eyebrow));
+      section.append(createEl('h2', 'section-title reveal', projects.title));
+
+      const grid = createEl('div', 'projects-grid');
+
+      projects.items.forEach(project => {
+        const card = createEl(project.url ? 'a' : 'article', 'proj-card glass reveal');
+        if (project.url) {
+          card.href = project.url;
+          card.target = '_blank';
+          card.rel = 'noopener';
+          card.setAttribute('aria-label', project.ariaLabel);
+        }
+
+        const content = createEl('div', 'proj-content');
+        const text = createEl('div', 'proj-text');
+        text.append(createEl('p', 'proj-num', project.number));
+        text.append(createEl('h3', 'proj-title', project.title));
+        text.append(createEl('p', 'proj-desc', project.description));
+
+        if (project.features && project.features.length) {
+          const features = createEl('ul', 'proj-features');
+          project.features.forEach(feature => features.append(createEl('li', '', feature)));
+          text.append(features);
+        }
+
+        const tags = createTagRow(project.tags);
+        tags.style.marginBottom = '0';
+        text.append(tags);
+
+        if (project.url && project.linkLabel) {
+          const link = createEl('span', 'proj-link', `${project.linkLabel} \u2192`);
+          text.append(link);
+        }
+
+        const image = createEl('img', 'proj-thumb');
+        image.src = project.image;
+        image.alt = project.imageAlt;
+
+        content.append(text, image);
+        card.append(content);
+        grid.append(card);
+      });
+
+      section.append(grid);
+    }
+
+    function renderContact(contact) {
+      const section = document.getElementById('contact');
+      section.replaceChildren();
+      section.append(createEl('p', 'eyebrow reveal', contact.eyebrow));
+      section.append(createEl('h2', 'section-title reveal', contact.title));
+
+      const icons = createEl('div', 'connect-icons reveal');
+      contact.methods.forEach(method => {
+        const link = createEl('a', 'connect-btn');
+        link.href = method.href;
+        link.setAttribute('aria-label', method.ariaLabel);
+        if (method.external) {
+          link.target = '_blank';
+          link.rel = 'noopener';
+        }
+        link.append(createSvgIcon(method.icon));
+        link.append(createEl('span', '', method.label));
+        icons.append(link);
+      });
+
+      section.append(icons);
+    }
+
+    function renderFooter(footer) {
+      const el = document.getElementById('site-footer');
+      el.replaceChildren();
+      el.append(createEl('p', '', footer.copyrightTemplate.replace('{year}', new Date().getFullYear())));
+
+      const nav = createEl('nav', 'footer-nav');
+      footer.nav.forEach(item => {
+        const link = createEl('a', '', item.label);
+        link.href = item.href;
+        nav.append(link);
+      });
+      el.append(nav);
+    }
+
+    function renderContent(content) {
+      document.title = content.site.title;
+      document.querySelector('meta[name="description"]').setAttribute('content', content.site.description);
+
+      renderHero(content.hero);
+      renderAbout(content.about);
+      renderExperience(content.experience);
+      renderProjects(content.projects);
+      renderContact(content.contact);
+      renderFooter(content.footer);
+      app.hidden = false;
+    }
+
+    function initCursor() {
+      const cursor = document.getElementById('cursor-atom');
+      if (!cursor || window.matchMedia('(pointer: coarse)').matches) return;
+      document.body.classList.add('custom-cursor');
+
+      let mouseX = window.innerWidth / 2;
+      let mouseY = window.innerHeight / 2;
+      let cursorX = mouseX;
+      let cursorY = mouseY;
+
+      document.addEventListener('mousemove', e => {
+        mouseX = e.clientX;
+        mouseY = e.clientY;
+      }, { passive: true });
+
+      document.querySelectorAll('a, button, .proj-card, .tl-card, .snapshot-item').forEach(el => {
+        el.addEventListener('mouseenter', () => cursor.classList.add('hover'));
+        el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
+      });
+
+      (function cursorFrame() {
+        cursorX += (mouseX - cursorX) * 0.22;
+        cursorY += (mouseY - cursorY) * 0.22;
+        cursor.style.transform = `translate3d(${cursorX}px, ${cursorY}px, 0) translate(-50%, -50%)`;
+        requestAnimationFrame(cursorFrame);
+      })();
+    }
+
+    function setTimelineExpanded(card, expanded) {
+      const header = card.querySelector('.tl-header');
+      const body = card.querySelector('.tl-body');
+      const inner = card.querySelector('.tl-body-inner');
+
+      if (expanded) {
+        body.hidden = false;
+        body.style.height = '0px';
+        body.style.opacity = '0';
+        card.classList.add('expanded');
+        header.setAttribute('aria-expanded', 'true');
+
+        requestAnimationFrame(() => {
+          body.style.height = `${inner.offsetHeight}px`;
+          body.style.opacity = '1';
+        });
+        return;
+      }
+
+      body.style.height = `${inner.offsetHeight}px`;
+      body.style.opacity = '1';
+      body.offsetHeight;
+      card.classList.remove('expanded');
+      header.setAttribute('aria-expanded', 'false');
+
+      requestAnimationFrame(() => {
+        body.style.height = '0px';
+        body.style.opacity = '0';
+      });
+    }
+
+    function initTimeline() {
+      document.querySelectorAll('.tl-card').forEach(card => {
+        const header = card.querySelector('.tl-header');
+        const body = card.querySelector('.tl-body');
+
+        header.addEventListener('click', () => {
+          setTimelineExpanded(card, !card.classList.contains('expanded'));
+        });
+
+        body.addEventListener('transitionend', event => {
+          if (event.propertyName !== 'height') return;
+          if (card.classList.contains('expanded')) {
+            body.style.height = 'auto';
+          } else {
+            body.hidden = true;
+          }
+        });
+      });
+    }
+
+    function initReveal() {
+      const io = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+          if (!entry.isIntersecting) return;
+          const peers = [...entry.target.parentElement.querySelectorAll('.reveal:not(.in)')];
+          const idx = peers.indexOf(entry.target);
+          setTimeout(() => entry.target.classList.add('in'), Math.max(0, idx) * 88);
+          io.unobserve(entry.target);
+        });
+      }, { threshold: 0.06, rootMargin: '0px 0px -16px 0px' });
+
+      document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+    }
+
+    function initParticleNetwork() {
+      const canvas = document.getElementById('bg-canvas');
+      const ctx = canvas.getContext('2d');
+      const mobile = window.innerWidth < 600;
+      const count = mobile ? 42 : 68;
+      const linkDistance = mobile ? 100 : 130;
+
+      function resize() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+      }
+      resize();
+      window.addEventListener('resize', resize, { passive: true });
+
+      const points = Array.from({ length: count }, () => ({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        vx: (Math.random() - 0.5) * 0.21,
+        vy: (Math.random() - 0.5) * 0.21,
+        r: Math.random() * 1.1 + 0.38,
+        a: Math.random() * 0.28 + 0.08
+      }));
+
+      (function frame() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        for (const point of points) {
+          point.x += point.vx;
+          point.y += point.vy;
+          if (point.x < 0) point.x = canvas.width;
+          if (point.x > canvas.width) point.x = 0;
+          if (point.y < 0) point.y = canvas.height;
+          if (point.y > canvas.height) point.y = 0;
+
+          ctx.beginPath();
+          ctx.arc(point.x, point.y, point.r, 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(200,151,58,${point.a})`;
+          ctx.fill();
+        }
+
+        ctx.lineWidth = 0.5;
+        for (let i = 0; i < points.length; i++) {
+          for (let j = i + 1; j < points.length; j++) {
+            const dx = points[i].x - points[j].x;
+            const dy = points[i].y - points[j].y;
+            const d = Math.sqrt(dx * dx + dy * dy);
+            if (d < linkDistance) {
+              ctx.beginPath();
+              ctx.strokeStyle = `rgba(200,151,58,${0.07 * (1 - d / linkDistance)})`;
+              ctx.moveTo(points[i].x, points[i].y);
+              ctx.lineTo(points[j].x, points[j].y);
+              ctx.stroke();
+            }
+          }
+        }
+        requestAnimationFrame(frame);
+      })();
+    }
+
+    function loadContent() {
+      renderContent(siteContent);
+      initCursor();
+      initTimeline();
+      initReveal();
+    }
+
+    initParticleNetwork();
+    loadContent();
   </script>
 
 </body>
