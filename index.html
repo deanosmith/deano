@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Dean M. Smith - Data Engineer based in Copenhagen." />
+      <meta name="description" content="Dean M. Smith - Data Platform Engineer based in Copenhagen." />
   <meta name="theme-color" content="#050505" />
   <title>Dean M. Smith</title>
   <link rel="icon" type="image/png" href="favicon.png" />
@@ -255,13 +255,13 @@
     .hero-loc {
       font-size: 11px; letter-spacing: 0.06em; color: var(--muted);
       margin-bottom: 22px;
-      opacity: 0; animation: riseIn 0.85s ease forwards 0.15s;
+      opacity: 0; animation: riseIn 0.85s ease forwards 0.35s;
     }
     .hero-name {
       font-size: clamp(50px, 6vw, 100px);
       font-weight: 600; letter-spacing: -0.04em; line-height: 0.88;
-      margin-bottom: 28px;
-      opacity: 0; animation: riseIn 0.85s ease forwards 0.35s;
+      margin-bottom: 14px;
+      opacity: 0; animation: riseIn 0.85s ease forwards 0.15s;
     }
     .hero-name .accent {
       color: var(--gold);
@@ -286,7 +286,7 @@
     .snapshot-item {
       display: grid;
       grid-template-columns: 86px 1fr;
-      align-items: baseline;
+      align-items: center;
       gap: 14px;
       padding: 12px 0;
       border-top: 1px solid rgba(200,151,58,0.08);
@@ -306,6 +306,40 @@
       line-height: 1.5;
       color: var(--text);
       opacity: 0.86;
+    }
+    .snapshot-copy strong {
+      color: var(--gold-bright);
+      font-weight: 500;
+      opacity: 1;
+    }
+    .snapshot-icons {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 12px;
+    }
+    .stack-icon {
+      width: 36px;
+      height: 36px;
+      object-fit: contain;
+      display: block;
+      flex-shrink: 0;
+      filter: drop-shadow(0 0 10px rgba(200,151,58,0.12));
+      transition: transform 0.22s ease, filter 0.22s ease;
+    }
+    .stack-icon.invert {
+      filter: invert(1) drop-shadow(0 0 10px rgba(200,151,58,0.12));
+    }
+    .stack-icon.lg {
+      width: 44px;
+      height: 44px;
+    }
+    .snapshot-item:hover .stack-icon {
+      transform: translateY(-1px);
+      filter: drop-shadow(0 0 12px rgba(200,151,58,0.28));
+    }
+    .snapshot-item:hover .stack-icon.invert {
+      filter: invert(1) drop-shadow(0 0 12px rgba(200,151,58,0.28));
     }
 
     /* Scroll hint */
@@ -461,6 +495,11 @@
     .tl-subhead {
       font-weight: 500;
     }
+    .tl-copy strong {
+      color: var(--gold-bright);
+      font-weight: 500;
+      opacity: 1;
+    }
     .tag {
       font-size: 12px; padding: 4px 12px; letter-spacing: 0.02em;
       border: 1px solid var(--border); border-radius: var(--r-pill); color: var(--text);
@@ -607,6 +646,9 @@
       .hero-snapshot    { gap: 0; }
       .snapshot-item    { grid-template-columns: 80px 1fr; gap: 12px; padding: 11px 0; }
       .snapshot-copy    { font-size: 13px; }
+      .stack-icon       { width: 30px; height: 30px; }
+      .stack-icon.lg    { width: 38px; height: 38px; }
+      .snapshot-icons   { gap: 10px; }
       footer            { padding: 24px 28px; flex-direction: column; gap: 10px; text-align: center; }
       .footer-nav       { justify-content: center; }
     }
@@ -681,10 +723,10 @@
     const siteContent = {
       "site": {
         "title": "Dean M. Smith",
-        "description": "Dean M. Smith - Data Engineer based in Copenhagen."
+        "description": "Dean M. Smith - Data Platform Engineer based in Copenhagen."
       },
       "hero": {
-        "location": "Data Engineer - Copenhagen, Denmark",
+        "location": "Data Platform Engineer — Copenhagen, Denmark",
         "name": [
           {
             "text": "Dean"
@@ -695,20 +737,31 @@
           }
         ],
         "tagline": [
-          "Building and maintaining robust data pipelines and infrastructure to empower downstream data-driven decision making."
+          "Building data pipelines and infrastructure that enable analytics and decision-making."
         ],
         "snapshot": [
           {
             "label": "Core stack",
-            "text": "Python, SQL, Docker, AWS, Kafka"
+            "icons": [
+              { "name": "Python", "src": "https://cdn.jsdelivr.net/gh/gilbarbara/logos@main/logos/python.svg" },
+              { "name": "SQL", "src": "https://cdn.jsdelivr.net/gh/gilbarbara/logos@main/logos/postgresql.svg" },
+              { "name": "Airflow", "src": "https://cdn.jsdelivr.net/gh/gilbarbara/logos@main/logos/airflow-icon.svg" },
+              { "name": "dbt", "src": "https://cdn.jsdelivr.net/gh/gilbarbara/logos@main/logos/dbt-icon.svg" },
+              { "name": "Kafka", "src": "https://cdn.jsdelivr.net/gh/gilbarbara/logos@main/logos/kafka-icon.svg", "invert": true },
+              { "name": "Snowflake", "src": "https://cdn.jsdelivr.net/gh/gilbarbara/logos@main/logos/snowflake-icon.svg" },
+              { "name": "AWS", "src": "https://cdn.jsdelivr.net/gh/gilbarbara/logos@main/logos/aws.svg" },
+              { "name": "Docker", "src": "https://cdn.jsdelivr.net/gh/gilbarbara/logos@main/logos/docker-icon.svg", "size": "lg" }
+            ]
           },
           {
             "label": "Focus",
-            "text": "Pipeline automation, data architecture, and cloud infrastructure"
+            "text": "Data pipelines, infrastructure and platform",
+            "highlightTerms": ["Data pipelines", "infrastructure", "platform"]
           },
           {
             "label": "Experience",
-            "text": "6 years across SaaS: fintech, DaaS, and analytics"
+            "text": "7 years across 4 companies — analytics to platform",
+            "highlightTerms": ["7 years", "4 companies"]
           }
         ],
       },
@@ -716,62 +769,94 @@
         "eyebrow": "Background",
         "title": "About Me",
         "paragraphs": [
-          "Data engineer with a deep love for computer science, space, music, and birdwatching.",
-          "Based in Copenhagen but originally from South Africa, I have been a data engineer for 6 years across 3 companies, working within agile teams. My responsibilities have spanned the full spectrum of backend data - from ingestion through to automation and maintenance.",
-          "Python and SQL are my bread and butter, though I also work with C#, Java, and Linux/Bash. Over time I've taken on more complex tooling: S3, Docker, and standard CI/CD Git practices."
+          "Based in Copenhagen but originally from South Africa. Data Engineer for 7 years across 4 companies — from customer-facing analytics to infrastructure-oriented platform development.",
+          "Curious by nature: I go deep on problems, learn fast from others, and enjoy the unexpected rabbit holes. Outside work — nature, birdwatching, trail running, and data on personalities."
         ],
         "highlightTerms": [
-          "computer science, space, music,",
-          "birdwatching.",
-          "6 years across 3 companies",
-          "Python",
-          "SQL"
+          "Copenhagen",
+          "South Africa",
+          "Data Engineer",
+          "7 years",
+          "4 companies",
+          "customer-facing analytics",
+          "infrastructure-oriented platform development",
         ],
         "facts": [
-          "Enneagram Type 5 - The Investigator & Observer - Dual Irish (EU) & South African citizen",
-          "Gallup strengths: Analytical - Responsibility - Deliberative - Competition - Focus"
+          "Dual Irish (EU) & South African citizen",
+          "Enneagram Type 5",
+          "Gallup: Analytical · Responsibility · Deliberative · Competition · Focus"
         ]
       },
       "experience": {
         "eyebrow": "Career",
         "title": "Experience",
+        "highlightTerms": [
+          "Airflow (Python)",
+          "Airflow",
+          "DBT",
+          "dbt",
+          "Snowflake",
+          "Kafka",
+          "SQL",
+          "Python ETL pipelines",
+          "Python",
+          "Postgres",
+          "PostgreSQL",
+          "AWS",
+          "S3 buckets",
+          "Athena",
+          "SQS",
+          "Task",
+          "Asset",
+          "~300GB of data",
+          "asynchronous Python",
+          "SharePoint",
+          "Postgres DB",
+          "Kanban",
+          "ETL",
+          "MySQL",
+          "Redshift",
+          "AWS S3",
+          "APIs",
+          "Knowledge Graph",
+          "Relational",
+          "Tableau",
+          "SCRUM",
+          "Sheets",
+          "Advanced Databases",
+          "Network Engineering",
+          "Cloud Development",
+          "Cyber-security",
+          "Object-Oriented Programming",
+          "full stack management",
+          "pricing engines",
+          "Data Foundation Squad"
+        ],
         "items": [
           {
-            "title": "Data Engineer",
-            "company": "Matter A/S",
+            "title": "Data Platform Engineer",
+            "company": "DFDS",
             "location": "Copenhagen, Denmark",
-            "date": "February 2024 - Present",
+            "date": "May 2025 - Present",
             "current": true,
             "details": [
               {
                 "type": "paragraph",
-                "text": "At Matter I was a part of the Data Foundation Squad, where I was responsible for the collection, storage, movement, tracking and metadata of various types of listed companies' documents. This comprised:"
+                "text": "Revenue Management & Analytics — developing and maintaining user-facing pricing engines."
+              },
+              {
+                "type": "paragraph",
+                "text": "Day-to-day stack:"
               },
               {
                 "type": "list",
                 "items": [
-                  {
-                    "text": "Python ETL pipelines",
-                    "children": [
-                      "Both Task and Asset architectures"
-                    ]
-                  },
-                  {
-                    "text": "Postgres database management"
-                  },
-                  {
-                    "text": "AWS infrastructure use:",
-                    "children": [
-                      "S3 buckets for storage",
-                      "Athena for EDAs/simple queries",
-                      "Rudimentary SQS use for pipeline triggering"
-                    ]
-                  }
+                  { "text": "Airflow (Python)" },
+                  { "text": "DBT" },
+                  { "text": "Snowflake" },
+                  { "text": "Kafka" },
+                  { "text": "SQL" }
                 ]
-              },
-              {
-                "type": "paragraph",
-                "text": "As the admin of this data, I was responsible for the maintenance of both the dev and prod database, which was live and accessible to our customers on our platform. This also involved reporting to various stakeholders within the company to ensure the data was both accurate and ingestible by our downstream teams."
               },
               {
                 "type": "subhead",
@@ -779,11 +864,76 @@
               },
               {
                 "type": "paragraph",
-                "text": "The initial project of my role was the processing of ~300GB of data. This involved the creation and implementation of a scalable pipeline that could stream the data from one cloud service to another, while also performing minor transformations."
+                "text": "Full stack management of a pricing engine used by Pricing Analysts:"
+              },
+              {
+                "type": "list",
+                "items": [
+                  { "text": "New features — front and back-end" },
+                  { "text": "New data points from existing and new sources" },
+                  { "text": "On-prem and cloud infrastructure management" }
+                ]
               },
               {
                 "type": "paragraph",
-                "text": "This pipeline consisted of asynchronous Python code that streamed data from Microsoft's SharePoint, merged it with a tracking file, and diverged the file's metadata to a Postgres DB and the reports to various S3 buckets. The reports were then processed and combined downstream with Matter's internal database to derive metrics."
+                "text": "Kafka keeps source data and updated prices real-time."
+              }
+            ],
+            "tags": [
+              "Airflow",
+              "dbt",
+              "Snowflake",
+              "Kafka",
+              "SQL"
+            ]
+          },
+          {
+            "title": "Data Engineer",
+            "company": "Matter A/S",
+            "location": "Copenhagen, Denmark",
+            "date": "February 2024 - April 2025",
+            "details": [
+              {
+                "type": "paragraph",
+                "text": "Data Foundation Squad — collection, storage, movement, tracking, and metadata for listed-company documents:"
+              },
+              {
+                "type": "list",
+                "items": [
+                  {
+                    "text": "Python ETL pipelines",
+                    "children": [
+                      "Task and Asset architectures"
+                    ]
+                  },
+                  {
+                    "text": "Postgres database management"
+                  },
+                  {
+                    "text": "AWS infrastructure:",
+                    "children": [
+                      "S3 buckets for storage",
+                      "Athena for EDAs / simple queries",
+                      "SQS for pipeline triggering"
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "paragraph",
+                "text": "Owned dev and prod databases (live on the customer platform) and kept data accurate for downstream teams."
+              },
+              {
+                "type": "subhead",
+                "text": "Notable projects:"
+              },
+              {
+                "type": "paragraph",
+                "text": "Built a scalable pipeline for ~300GB of data — streaming between cloud services with light transformations."
+              },
+              {
+                "type": "paragraph",
+                "text": "Asynchronous Python streamed from SharePoint, merged a tracking file, then split metadata to a Postgres DB and reports to S3 buckets."
               }
             ],
             "tags": [
@@ -802,23 +952,20 @@
             "details": [
               {
                 "type": "paragraph",
-                "text": "Working within the Data & Analytics team using the Kanban framework, my daily responsibilities included:"
+                "text": "Data & Analytics team (Kanban). Day-to-day:"
               },
               {
                 "type": "list",
                 "items": [
                   {
-                    "text": "The management of Penneo's analytics pipelines:",
+                    "text": "Analytics pipelines:",
                     "children": [
                       "Python and SQL based ETL pipelines.",
-                      "Sources and destinations included MySQL, Redshift, AWS S3, APIs."
+                      "Sources/destinations: MySQL, Redshift, AWS S3, APIs."
                     ]
                   },
                   {
-                    "text": "Supporting our analysts:",
-                    "children": [
-                      "This can include simple ad hoc requests, pipelines creations or alterations and statistical aggregations."
-                    ]
+                    "text": "Analyst support — ad hoc requests, pipeline changes, and aggregations."
                   }
                 ]
               },
@@ -828,11 +975,11 @@
               },
               {
                 "type": "paragraph",
-                "text": "I lead a database restructuring project that's purpose was the transformation of a Knowledge Graph database into a Relational database. This has resulted in hours of Data Analysts' time saved each month due to the pre-parsing of nested dictionary columns before the data was ingested by our BI tool, Tableau."
+                "text": "Led a Knowledge Graph → Relational restructure. Pre-parsed nested columns before Tableau — hours saved for analysts each month."
               },
               {
                 "type": "paragraph",
-                "text": "I was also responsible for generating a 'document everything' culture within the various data-related departments. As a result, the onboarding and understanding of the company's data, from new to old employees, has greatly increased as the bottleneck of key-man conversations was reduced."
+                "text": "Drove a document-everything culture across data teams, cutting key-man bottlenecks for onboarding."
               }
             ],
             "tags": [
@@ -852,15 +999,11 @@
             "details": [
               {
                 "type": "paragraph",
-                "text": "Working in a small Data & Analytics team that practiced the SCRUM framework, I was the primary Data Engineer responsible for establishing a data warehouse to centralise the data."
+                "text": "Primary Data Engineer in a SCRUM Data & Analytics team — stood up a central data warehouse."
               },
               {
                 "type": "paragraph",
-                "text": "This data ranged from sensor information retrieved from APIs to Sales information imported from Sheets. The data was stored in a MySQL database which was connected to Tableau for various visualisations."
-              },
-              {
-                "type": "paragraph",
-                "text": "As the first Data Engineer my responsibilities included the above data management, Linux commands, Image Recognition software installations and device management."
+                "text": "Sensor data via APIs and sales from Sheets → MySQL → Tableau. Also Linux, image-recognition installs, and device management."
               }
             ],
             "tags": [
@@ -879,7 +1022,7 @@
             "details": [
               {
                 "type": "paragraph",
-                "text": "This degree gave me a strong foundational understanding of IT and IoT. With modules like Advanced Databases, Network Engineering, Cloud Development, Cyber-security, and Object-Oriented Programming. It gave me the tools to create and manipulate software, hardware and data using all kinds of tools."
+                "text": "Foundation in IT and IoT — Advanced Databases, Network Engineering, Cloud Development, Cyber-security, and Object-Oriented Programming."
               }
             ],
             "tags": [
@@ -898,7 +1041,7 @@
           {
             "number": "01",
             "title": "Stride",
-            "description": "ACWR workload app to manage and monitor fitness levels - keeping athletes in their optimal training zone.",
+            "description": "ACWR fitness monitor ensuring bodily strain is optimal and sustainable.",
             "url": "https://stride-dynamics.vercel.app/",
             "ariaLabel": "Open Stride project",
             "image": "stride.png",
@@ -911,8 +1054,23 @@
           },
           {
             "number": "02",
+            "title": "Atlas",
+            "description": "Film recommendations using ultra-fine graph-based granularity.",
+            "url": "https://atlas-index.vercel.app/",
+            "ariaLabel": "Open Atlas project",
+            "image": "atlas.png",
+            "imageAlt": "Atlas project preview",
+            "tags": [
+              "Films",
+              "Recommendations",
+              "Graph"
+            ],
+            "linkLabel": "View Project"
+          },
+          {
+            "number": "03",
             "title": "Lexi Score",
-            "description": "Lexical scoring tool that quantifies and ranks the reading complexity of books and literary texts.",
+            "description": "Reading complexity tool for analysing and calculating a book's lexical difficulty.",
             "url": "https://lexi-score.vercel.app/",
             "ariaLabel": "Open Lexi Score project",
             "image": "lexiscore.png",
@@ -925,7 +1083,22 @@
             "linkLabel": "View Project"
           },
           {
-            "number": "03",
+            "number": "04",
+            "title": "Brevity",
+            "description": "Personalised iOS wallpapers displaying weather, calendar, and other customisation options.",
+            "url": "https://brevity-ios.vercel.app/",
+            "ariaLabel": "Open Brevity project",
+            "image": "brevity.png",
+            "imageAlt": "Brevity project preview",
+            "tags": [
+              "iOS",
+              "Wallpaper",
+              "Weather"
+            ],
+            "linkLabel": "View Project"
+          },
+          {
+            "number": "05",
             "title": "Notas",
             "description": "A lightweight notes workspace built for fast capture, sharing, and personalization.",
             "url": "https://deanosmith.github.io/Notas/",
@@ -1086,6 +1259,26 @@
       return svg;
     }
 
+    function createStackIcons(icons) {
+      const row = createEl('div', 'snapshot-icons');
+      icons.forEach(icon => {
+        const classes = ['stack-icon'];
+        if (icon.invert) classes.push('invert');
+        if (icon.size) classes.push(icon.size);
+        const img = createEl('img', classes.join(' '));
+        img.src = icon.src;
+        img.alt = icon.name;
+        img.title = icon.name;
+        const px = icon.size === 'lg' ? 44 : 36;
+        img.width = px;
+        img.height = px;
+        img.loading = 'lazy';
+        img.decoding = 'async';
+        row.append(img);
+      });
+      return row;
+    }
+
     function renderHero(hero) {
       const identity = document.getElementById('hero-identity');
       const snapshot = document.getElementById('hero-snapshot');
@@ -1095,8 +1288,6 @@
       snapshot.replaceChildren();
 
 
-      identity.append(createEl('p', 'hero-loc', hero.location));
-
       const name = createEl('h1', 'hero-name');
       hero.name.forEach((part, index) => {
         if (index > 0) name.append(document.createElement('br'));
@@ -1104,6 +1295,7 @@
         name.append(node);
       });
       identity.append(name);
+      identity.append(createEl('p', 'hero-loc', hero.location));
 
       const tagline = createEl('p', 'hero-tagline');
       appendLines(tagline, hero.tagline);
@@ -1112,7 +1304,13 @@
       hero.snapshot.forEach(item => {
         const row = createEl('div', 'snapshot-item');
         row.append(createEl('span', 'snapshot-label', item.label));
-        row.append(createEl('span', 'snapshot-copy', item.text));
+        if (item.icons && item.icons.length) {
+          row.append(createStackIcons(item.icons));
+        } else {
+          const copy = createEl('span', 'snapshot-copy');
+          appendHighlightedText(copy, item.text, item.highlightTerms || []);
+          row.append(copy);
+        }
         snapshot.append(row);
       });
 
@@ -1136,22 +1334,25 @@
       section.append(card);
     }
 
-    function createList(items) {
+    function createList(items, highlights = []) {
       const list = createEl('ul');
       items.forEach(item => {
-        const li = createEl('li', '', item.text);
+        const li = createEl('li');
+        appendHighlightedText(li, item.text, highlights);
         if (item.children && item.children.length) {
-          li.append(createList(item.children.map(child => ({ text: child }))));
+          li.append(createList(item.children.map(child => ({ text: child })), highlights));
         }
         list.append(li);
       });
       return list;
     }
 
-    function renderDetailBlock(block) {
-      if (block.type === 'list') return createList(block.items);
+    function renderDetailBlock(block, highlights = []) {
+      if (block.type === 'list') return createList(block.items, highlights);
       if (block.type === 'subhead') return createEl('p', 'tl-subhead', block.text);
-      return createEl('p', '', block.text);
+      const p = createEl('p');
+      appendHighlightedText(p, block.text, highlights);
+      return p;
     }
 
     function renderExperience(experience) {
@@ -1161,6 +1362,7 @@
       section.append(createEl('h2', 'section-title reveal', experience.title));
 
       const timeline = createEl('div', 'timeline');
+      const highlights = experience.highlightTerms || [];
 
       experience.items.forEach((item, index) => {
         const timelineItem = createEl('div', 'tl-item reveal');
@@ -1185,7 +1387,7 @@
 
         const inner = createEl('div', 'tl-body-inner');
         const copy = createEl('div', 'tl-copy');
-        item.details.forEach(block => copy.append(renderDetailBlock(block)));
+        item.details.forEach(block => copy.append(renderDetailBlock(block, highlights)));
         inner.append(copy);
         inner.append(createTagRow(item.tags));
         body.append(inner);
